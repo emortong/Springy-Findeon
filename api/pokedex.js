@@ -76,5 +76,63 @@ router.route('/startswith/:prefix')
     })
   })
 
+router.route('/typesOr/:type')
+  .get((req, res) => {
+    client.search({
+      index: 'pokedex',
+      type: 'pokemon',
+      body: {
+        query: {
+          match: {
+            types: {
+              query: req.params.type.split('&').join(','),
+              operator: 'or'
+            }
+          }
+        }
+      }
+    }).then(function (resp) {
+        res.json(resp)
+    }, function (err) {
+        console.trace(err.message);
+    })
+  })
+
+router.route('/typesAnd/:type')
+  .get((req, res) => {
+    client.search({
+      index: 'pokedex',
+      type: 'pokemon',
+      body: {
+        query: {
+          match: {
+            types: {
+              query: req.params.type.split('&').join(','),
+              operator: 'and'
+            }
+          }
+        }
+      }
+    }).then(function (resp) {
+        res.json(resp)
+    }, function (err) {
+        console.trace(err.message);
+    })
+  })
+
+router.route('/statValue/:statValue')
+  .get((req, res) => {
+    let statValue = req.params.statValue.split('-').join(':');
+    client.search({
+      index: 'pokedex',
+      type: 'pokemon',
+      q: `${statValue}`
+    }).then(function (resp) {
+        res.json(resp)
+    }, function (err) {
+        console.trace(err.message);
+    })
+  })
+
 
 module.exports = router;

@@ -65,3 +65,74 @@ describe('GET /api/pokedex/startswith/:prefix', () => {
       })
     })
   })
+describe('GET /api/pokedex/typesOr/:types', () => {
+  it('should return 56 hits when querying the types "fire"', (done) => {
+    request(app)
+      .get('/api/pokedex/typesOr/fire')
+      .end((err, res) => {
+        if(err) {
+          throw new Error(err);
+        }
+        let resData = JSON.parse(res.text);
+        let {total} = resData.hits;
+        expect(total).to.equal(56)
+        done()
+      })
+    })
+    it('should return 92 hits when querying the types "fire and ice"', (done) => {
+    request(app)
+      .get('/api/pokedex/typesOr/fire&ice')
+      .end((err, res) => {
+        if(err) {
+          throw new Error(err);
+        }
+        let resData = JSON.parse(res.text);
+        let {total} = resData.hits;
+        expect(total).to.equal(91)
+        done()
+      })
+    })
+  })
+describe('GET /api/pokedex/typesAnd/:types', () => {
+  it('should return 56 hits when querying the types "fire"', (done) => {
+    request(app)
+      .get('/api/pokedex/typesAnd/fire')
+      .end((err, res) => {
+        if(err) {
+          throw new Error(err);
+        }
+        let resData = JSON.parse(res.text);
+        let {total} = resData.hits;
+        expect(total).to.equal(56)
+        done()
+      })
+    })
+    it('should return 3 hits when querying the types "water and grass"', (done) => {
+    request(app)
+      .get('/api/pokedex/typesAnd/water&grass')
+      .end((err, res) => {
+        if(err) {
+          throw new Error(err);
+        }
+        let resData = JSON.parse(res.text);
+        let {total} = resData.hits;
+        expect(total).to.equal(3)
+        done()
+      })
+    })
+  })
+describe('GET /api/pokedex/statValue/:statValue', () => {
+  it('should return 56 hits when querying the types "fire"', (done) => {
+    request(app)
+      .get('/api/pokedex/statValue/HP-160')
+      .end((err, res) => {
+        if(err) {
+          throw new Error(err);
+        }
+        let resData = JSON.parse(res.text);
+        let {total} = resData.hits;
+        expect(total).to.equal(1)
+        done()
+      })
+    })
+})
