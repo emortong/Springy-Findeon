@@ -1,0 +1,31 @@
+{
+  "name": "Springy-Findeon",
+  "version": "1.0.0",
+  "description": "ElasticSearch exercise on an express api",
+  "main": "client.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "ENVIORNMENT=TEST mocha -R spec tests/**.spec.js --watch",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emortong/Springy-Findeon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emortong/Springy-Findeon/issues"
+  },
+  "homepage": "https://github.com/emortong/Springy-Findeon#readme",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "elasticsearch": "^12.1.3",
+    "express": "^4.14.1",
+    "mocha": "^3.2.0",
+    "supertest": "^3.0.0"
+  }
+}
