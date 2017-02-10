@@ -135,4 +135,49 @@ describe('GET /api/pokedex/statValue/:statValue', () => {
         done()
       })
     })
+   it('should return pokemons whose attack is greater than 180', (done) => {
+    request(app)
+      .get('/api/pokedex/statAboveValue/attack-180')
+      .end((err, res) => {
+        if(err) {
+          throw new Error(err);
+        }
+        let resData = JSON.parse(res.text);
+        console.log(resData);
+        let {total} = resData.hits;
+        expect(total).to.equal(1)
+        done()
+      })
+    })
+})
+describe('GET /api/pokedex/statBelowValue/:statValue', () => {
+  it('should return pokemons whose defense is below 10', (done) => {
+    request(app)
+      .get('/api/pokedex/statBelowValue/defense-10')
+      .end((err, res) => {
+        if(err) {
+          throw new Error(err);
+        }
+        let resData = JSON.parse(res.text);
+        let {total} = resData.hits;
+        // expect(total).to.equal(1)
+        done()
+      })
+    })
+})
+
+describe('GET /api/pokedex/statBetweenValue/:statValue', () => {
+  it('should return pokemons where the stat property is greater than or equal to low and less than the high parameter', (done) => {
+    request(app)
+      .get('/api/pokedex/statBetweenValue/totalStats-750-800')
+      .end((err, res) => {
+        if(err) {
+          throw new Error(err);
+        }
+        let resData = JSON.parse(res.text);
+        let {total} = resData.hits;
+        // expect(total).to.equal(1)
+        done()
+      })
+    })
 })

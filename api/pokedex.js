@@ -122,11 +122,96 @@ router.route('/typesAnd/:type')
 
 router.route('/statValue/:statValue')
   .get((req, res) => {
-    let statValue = req.params.statValue.split('-').join(':');
+    let pair = req.params.statValue.split('-')
+    let stat = pair[0];
+    let value = Number(pair[1]);
     client.search({
       index: 'pokedex',
       type: 'pokemon',
-      q: `${statValue}`
+      body: {
+        query: {
+          match : {
+            [`${stat}`]: value
+          }
+        }
+      }
+    }).then(function (resp) {
+        res.json(resp)
+    }, function (err) {
+        console.trace(err.message);
+    })
+  })
+
+router.route('/statAboveValue/:statValue')
+  .get((req, res) => {
+    let pair = req.params.statValue.split('-');
+    let stat = pair[0];
+    let value = Number(pair[1]);
+    console.log(value);
+    client.search({
+      index: 'pokedex',
+      type: 'pokemon',
+      body: {
+        query: {
+          range: {
+            [`${stat}`]: {
+              gte: value,
+              boost: 2.0
+            }
+          }
+        }
+      }
+    }).then(function (resp) {
+        res.json(resp)
+    }, function (err) {
+        console.trace(err.message);
+    })
+  })
+
+router.route('/statBelowValue/:statValue')
+  .get((req, res) => {
+    let pair = req.params.statValue.split('-');
+    let stat = pair[0];
+    let value = Number(pair[1]);
+    console.log(value);
+    client.search({
+      index: 'pokedex',
+      type: 'pokemon',
+      body: {
+        query: {
+          range: {
+            [`${stat}`]: {
+              lt: value
+            }
+          }
+        }
+      }
+    }).then(function (resp) {
+        res.json(resp)
+    }, function (err) {
+        console.trace(err.message);
+    })
+  })
+
+router.route('/statBetweenValue/:statValue')
+  .get((req, res) => {
+    let pair = req.params.statValue.split('-');
+    let stat = pair[0];
+    let lowVal = Number(pair[1]);
+    let highVal = Number(pair[2]);
+    client.search({
+      index: 'pokedex',
+      type: 'pokemon',
+      body: {
+        query: {
+          range: {
+            [`${stat}`]: {
+              gt: lowVal,
+              lt: highVal
+            }
+          }
+        }
+      }
     }).then(function (resp) {
         res.json(resp)
     }, function (err) {
