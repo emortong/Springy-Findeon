@@ -13,7 +13,7 @@ describe('GET /api/pokedex', () => {
           throw new Error(err);
         }
         let resData = JSON.parse(res.text);
-        expect(resData.hits.total).to.equal(721);
+        expect(resData.hits.total).to.equal(800);
         done()
       })
     })
@@ -21,14 +21,14 @@ describe('GET /api/pokedex', () => {
 describe('GET /api/pokedex/:id', () => {
   it('should get be able to get a document by its id', (done) => {
     request(app)
-      .get('/api/pokedex/002')
+      .get('/api/pokedex/2')
       .end((err, res) => {
         if(err) {
           throw new Error(err);
         }
         let resData = JSON.parse(res.text);
         let {name} = resData.hits.hits[0]._source;
-        expect(name).to.equal('ivysaur')
+        expect(name).to.equal('venusaur')
         done()
       })
     })
@@ -42,10 +42,10 @@ describe('GET /api/pokedex/query/:query', () => {
           throw new Error(err);
         }
         let resData = JSON.parse(res.text);
-        let sylveon = resData.hits.hits[0]._source.name;
-        let psyduck = resData.hits.hits[1]._source.name;
-        expect(sylveon).to.equal('sylveon')
+        let psyduck = resData.hits.hits[0]._source.name;
+        let sylveon = resData.hits.hits[1]._source.name;
         expect(psyduck).to.equal('psyduck')
+        expect(sylveon).to.equal('sylveon')
         done()
       })
     })
@@ -66,7 +66,7 @@ describe('GET /api/pokedex/startswith/:prefix', () => {
     })
   })
 describe('GET /api/pokedex/typesOr/:types', () => {
-  it('should return 56 hits when querying the types "fire"', (done) => {
+  it('should return 64 hits when querying the types "fire"', (done) => {
     request(app)
       .get('/api/pokedex/typesOr/fire')
       .end((err, res) => {
@@ -75,11 +75,11 @@ describe('GET /api/pokedex/typesOr/:types', () => {
         }
         let resData = JSON.parse(res.text);
         let {total} = resData.hits;
-        expect(total).to.equal(56)
+        expect(total).to.equal(64)
         done()
       })
     })
-    it('should return 92 hits when querying the types "fire and ice"', (done) => {
+    it('should return 105 hits when querying the types "fire and ice"', (done) => {
     request(app)
       .get('/api/pokedex/typesOr/fire&ice')
       .end((err, res) => {
@@ -88,13 +88,13 @@ describe('GET /api/pokedex/typesOr/:types', () => {
         }
         let resData = JSON.parse(res.text);
         let {total} = resData.hits;
-        expect(total).to.equal(91)
+        expect(total).to.equal(105)
         done()
       })
     })
   })
 describe('GET /api/pokedex/typesAnd/:types', () => {
-  it('should return 56 hits when querying the types "fire"', (done) => {
+  it('should return 64 hits when querying the types "fire"', (done) => {
     request(app)
       .get('/api/pokedex/typesAnd/fire')
       .end((err, res) => {
@@ -103,7 +103,7 @@ describe('GET /api/pokedex/typesAnd/:types', () => {
         }
         let resData = JSON.parse(res.text);
         let {total} = resData.hits;
-        expect(total).to.equal(56)
+        expect(total).to.equal(64)
         done()
       })
     })
@@ -122,7 +122,7 @@ describe('GET /api/pokedex/typesAnd/:types', () => {
     })
   })
 describe('GET /api/pokedex/statValue/:statValue', () => {
-  it('should return 56 hits when querying the types "fire"', (done) => {
+  it('should return 1 hit when stat is HP and value is 160', (done) => {
     request(app)
       .get('/api/pokedex/statValue/HP-160')
       .end((err, res) => {
@@ -143,9 +143,8 @@ describe('GET /api/pokedex/statValue/:statValue', () => {
           throw new Error(err);
         }
         let resData = JSON.parse(res.text);
-        console.log(resData);
         let {total} = resData.hits;
-        expect(total).to.equal(1)
+        expect(total).to.equal(5)
         done()
       })
     })
@@ -160,7 +159,7 @@ describe('GET /api/pokedex/statBelowValue/:statValue', () => {
         }
         let resData = JSON.parse(res.text);
         let {total} = resData.hits;
-        // expect(total).to.equal(1)
+        expect(total).to.equal(2)
         done()
       })
     })
@@ -176,7 +175,7 @@ describe('GET /api/pokedex/statBetweenValue/:statValue', () => {
         }
         let resData = JSON.parse(res.text);
         let {total} = resData.hits;
-        // expect(total).to.equal(1)
+        expect(total).to.equal(5)
         done()
       })
     })

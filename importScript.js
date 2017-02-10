@@ -2,11 +2,11 @@ let elasticsearch = require('elasticsearch');
 let pokemonJSON = require('./data/pokedex.json')
 let client = require('./client')
 
-pokemonJSON.map( pokemon => {
+pokemonJSON.map( (pokemon, i) => {
   client.create({
     index: 'pokedex',
     type: 'pokemon',
-    id: pokemon.id,
+    id: i,
     body: {
       name: pokemon.name,
       totalStats: Number(pokemon.totalStats),
